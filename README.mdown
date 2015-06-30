@@ -1,0 +1,57 @@
+(This is a work in process; excuse the pithy nature of this README.)
+
+# Copy and validate data between Go structures
+
+This package allows you to deep-copy data from a Go variable to another, as long as they are of compatible (but not necessarily identical) types.
+
+For example, you can copy data from a map to a struct:
+
+```go
+type testStruct struct {
+    Field1 *string `json:"f1" pop:"required"`
+    Field2 *int    `pop:"required"`
+    Field3 string  `pop:"optional"`
+}
+
+s := map[string]interface{}{
+    "f1":     "test",
+    "Field2": 123,
+}
+
+d := testStruct{}
+
+if err := Populate(s, &d); err != nil {
+    t.Errorf("%s", err)
+}
+```
+
+Popular knows to check for type compatibility, and will perform deep copies into substructures and arrays.
+
+The package uses the `pop` tag to determine whether it should consider or ignore a field. For structs, field names in the source are computed based on either the destination's field name, or the JSON field name. Unexported fields, fields that do not have a `pop` tag, and fields that have an empty JSON name (e.g.: `json:"-"`) are ignored.
+
+## Validation
+
+You can also use the `Validate()` function to check that a struct contains all the properties marked with a `pop:"required"` tag. This is handy to perform quick validation, and understands empty values and nil values.
+
+## License
+
+Copyright (c) 2015 MTA Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
