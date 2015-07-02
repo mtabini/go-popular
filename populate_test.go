@@ -1,4 +1,4 @@
-package populate
+package popular
 
 import (
 	"testing"

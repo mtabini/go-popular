@@ -1,4 +1,4 @@
-package populate
+package popular
 
 import (
 	"fmt"
@@ -78,10 +78,6 @@ func valueForField(sourceType reflect.Type, sourceValue reflect.Value, fieldName
 	found = value.IsValid()
 
 	return
-}
-
-func copyValue(sourceValue reflect.Value, destValue reflect.Value) error {
-	return nil
 }
 
 func populateStruct(name string, sourceType reflect.Type, sourceValue reflect.Value, destType reflect.Type, destValue reflect.Value) error {
